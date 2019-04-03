@@ -1,6 +1,6 @@
 class DestinationsController < ApplicationController
   def index
-    @destination = Destination.new
+    #@destination = Destination.new(destination_params)
     @destinations = Destination.all
   end
 
