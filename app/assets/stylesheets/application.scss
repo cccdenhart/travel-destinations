@@ -15,3 +15,8 @@
  @import './sessions.scss';
  @import './users.scss';
  @import 'bootstrap';
+
+.nav {
+  position: absolute;
+  z-index: 2;
+}
