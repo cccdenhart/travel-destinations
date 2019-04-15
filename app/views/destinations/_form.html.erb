@@ -1,31 +1,26 @@
-<%= form_with model: @destination, local: true do |form| %>
-
-<% if @destination.errors.any? %>
-  <div id="error_explanation">
-    <h2>
-      <%= pluralize(@destination.errors.count, "error") %>
-      prohibited this destination from being saved:
-    </h2>
-    <ul>
-      <% @destination.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-
-<p>
-  <%= form.label :latitude %><br>
-  <%= form.number_field :lat, step: :any %>
-</p>
-
-<p>
-  <%= form.label :longitude %><br>
-  <%= form.number_field :long, step: :any %>
-</p>
-
-<p>
-  <%= form.submit %>
-</p>
-
+<%= form_for [@user, @destination] do |form| %>
+  <% if @destination.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@destination.errors.count, "error") %>
+        prohibited this destination from being saved:
+      </h2>
+      <ul>
+        <% @destination.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <p>
+    <%= form.label :latitude %><br>
+    <%= form.number_field :lat, step: :any %>
+  </p>
+  <p>
+    <%= form.label :longitude %><br>
+    <%= form.number_field :long, step: :any %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
 <% end %>

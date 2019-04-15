@@ -4,16 +4,43 @@
     <title>Travel</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet'/>
-
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
   <body>
+    <div class="user_auth">
+      <!-- REFERENCED: https://github.com/RubySource/rails_simple_user_auth -->
+      <%unless session[:user_id]%>
+        <ul class="nav">
+          <li><%= link_to :Signup , :signup, class: "nav_links"%></li>
+          |
+          <li><%= link_to :Login , :login, class: "nav_links"%></li>
+        </ul>
+      <%else%>
+        <ul class="nav">
+          <li><%= link_to :Home , :home, class: "nav_links" %> |</li>
+          <li><%= link_to :Profile , :profile, class: "nav_links" %> |</li>
+          <li><%= link_to :Setting , :setting, class: "nav_links" %> |</li>
+          <li><%= link_to :Logout , :logout, class: "nav_links" %></li>
+        </ul>
+      <%end%>
+    </div>
+    <% if flash[:color]== "valid" %>
+      <div class="valid_notice">
+        <p><%= flash[:notice]%></p>
+      </div>
+    <% elsif flash[:color]== "invalid"%>
+      <div class="invalid_notice">
+        <p><%=flash[:notice]%></p>
+      </div>
+    <%else%>
+      <div class="notice">
+        <p><%=flash[:notice]%></p>
+      </div>
+    <%end%>
     <%= yield %>
   </body>
 </html>

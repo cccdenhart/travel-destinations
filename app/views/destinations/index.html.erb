@@ -1,16 +1,14 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.css' type='text/css'/>
-
 <div id='map'></div>
-
 <div id='add'>
-  <%= link_to 'New destination', new_destination_path %>
+  <%= link_to :Logout , :logout, class: "nav_links" %>
+  <%= link_to 'New destination', new_user_destination_path %>
 </div>
-
 <script>
   // generate map
   mapboxgl.accessToken = "pk.eyJ1IjoiY2NjZGVuaGFydCIsImEiOiJjamtzdjNuNHAyMjB4M3B0ZHVoY3l2MndtIn0.jkJIFGPTN7oSkQlHi0xtow";
-
+  
   var map = new mapboxgl.Map({
     container: 'map',
     style: "mapbox://styles/cccdenhart/cjonpdet931ol2rpbp49oi8a4",
@@ -19,13 +17,13 @@
     ],
     zoom: 12
   });
-
+  
   map.addControl(new MapboxGeocoder({accessToken: mapboxgl.accessToken}));
-
+  
   // add markers for each point
   <% @destinations.each do |dest| %>
-  console.log(<% dest %>);
-  var coords = [<%= dest.long %>, <%= dest.lat %>];
-  new mapboxgl.Marker().setLngLat(coords).addTo(map);
+    console.log(<% dest %>);
+    var coords = [<%= dest.long %>, <%= dest.lat %>];
+    new mapboxgl.Marker().setLngLat(coords).addTo(map);
   <% end %>
 </script>

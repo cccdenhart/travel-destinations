@@ -1,7 +1,6 @@
 class DestinationsController < ApplicationController
   def index
-    #@destination = Destination.new(destination_params)
-    @destinations = Destination.all
+    @destinations = Destination.where("user_id = ?", params[:user_id])
   end
 
   def show
@@ -9,7 +8,8 @@ class DestinationsController < ApplicationController
   end
 
   def new
-    @destination = Destination.new
+    @user = User.find(params[:user_id])
+    @destination = @user.destinations.build
   end
 
   def edit
@@ -17,10 +17,11 @@ class DestinationsController < ApplicationController
   end
 
   def create
-    @destination = Destination.new(destination_params)
+    @user = User.find(params[:user_id])
+    @destination = @user.destinations.build(destination_params)
 
     if @destination.save
-      redirect_to @destination
+      redirect_to user_destinations_path(@user)
     else
       render 'new'
     end
