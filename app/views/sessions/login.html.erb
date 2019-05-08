@@ -1,11 +1,19 @@
-<% @page_title = "UserAuth | Login" -%>
-<div class= "Sign_Form">
+<% @page_title = "Login" -%>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="authen text-center">
   <h1>Log in</h1>
-  <%= form_tag(:action => 'login_attempt') do %>
-    <p>Username or Email:<br>
-      <%= text_field_tag :email, params[:email] %></p>
-    <p>Password:<br>
-      <%= password_field_tag :password %></p>
-    <%= submit_tag("Log In") %>
+  <%= form_tag(:action => 'login_attempt', :html => {:class => "form-horizontal center"}) do %>
+    <div class="form-group">
+      <%= text_field_tag :email, params[:email], placeholder: 'email', class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= password_field_tag :password, nil, placeholder: 'password', class: 'form-control' %>
+    </div>
+    <%= submit_tag("Log In", class: "btn btn-default btn-primary") %>
   <% end %>
 </div>

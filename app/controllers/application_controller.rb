@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery unless: -> { request.format.json? }
   # user authentication for all controllers
   protected
   def authenticate_user

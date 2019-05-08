@@ -1,5 +1,6 @@
 class DestinationsController < ApplicationController
   def index
+    @user = User.find(params[:user_id])
     @destinations = Destination.where("user_id = ?", params[:user_id])
   end
 
@@ -20,10 +21,17 @@ class DestinationsController < ApplicationController
     @user = User.find(params[:user_id])
     @destination = @user.destinations.build(destination_params)
 
-    if @destination.save
-      redirect_to user_destinations_path(@user)
-    else
-      render 'new'
+    respond_to do |format|
+      if @destination.save
+        format.html { redirect_to @user_destination, notice: "Save process completed!" }
+        format.json { render json: @destination, status: :created, location: @destination }
+      else
+        format.html {
+          flash.now[:notice]="Save proccess coudn't be completed!"
+          render :new
+        }
+        format.json { render json: @destination.errors, status: :unprocessable_entity}
+      end
     end
   end
 
@@ -46,6 +54,14 @@ class DestinationsController < ApplicationController
 
   private
   def destination_params
-    params.require(:destination).permit(:lat, :long)
+    if params.include?("destination")
+      permit = ["lat", "long"]
+      search = params["destination"]
+      destination_params = {}
+      permit.each { |p| destination_params.store(p.to_sym, search[p]) if search.include?(p) }
+      return destination_params
+    else
+      return {}
+    end
   end
 end
