@@ -1,11 +1,4 @@
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.0.0/mapbox-gl-geocoder.min.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.0.0/mapbox-gl-geocoder.css' type='text/css' />
 <div id='map'></div>
-<div id='add'>
-  <br>
-  <br>
-  <h1 class="ml-2"><%= link_to 'Add destination', new_user_destination_path %></h1>
-</div>
 <script>
   // generate map
   mapboxgl.accessToken = "pk.eyJ1IjoiY2NjZGVuaGFydCIsImEiOiJjamtzdjNuNHAyMjB4M3B0ZHVoY3l2MndtIn0.jkJIFGPTN7oSkQlHi0xtow";
@@ -72,8 +65,6 @@
         .setPopup(popup)
         .addTo(map);
     <% end %>
-  
-  
   });
   
   // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
