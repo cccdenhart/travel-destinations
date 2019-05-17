@@ -1,29 +1,74 @@
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.min.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v3.1.4/mapbox-gl-geocoder.css' type='text/css'/>
 <div id='map'></div>
-<div id='add'>
-  <br>
-  <%= link_to 'New destination', new_user_destination_path %>
-</div>
 <script>
   // generate map
   mapboxgl.accessToken = "pk.eyJ1IjoiY2NjZGVuaGFydCIsImEiOiJjamtzdjNuNHAyMjB4M3B0ZHVoY3l2MndtIn0.jkJIFGPTN7oSkQlHi0xtow";
   
   var map = new mapboxgl.Map({
     container: 'map',
-    style: "mapbox://styles/cccdenhart/cjonpdet931ol2rpbp49oi8a4",
+    style: "mapbox://styles/mapbox/streets-v11",
     center: [
       -71.073329, 42.352738
     ],
     zoom: 12
   });
   
-  map.addControl(new MapboxGeocoder({accessToken: mapboxgl.accessToken}));
+  // https://medium.com/actualize-network/sending-post-requests-in-rails-5-1-without-jquery-ff89f6f80487
+  function addgeo(lat, long) {
+    console.log("lat: ", lat);
+    console.log("long: ", long);
+    fetch('/users/<%= @user.id %>/destinations.json', {
+      method: 'post',
+      body: JSON.stringify({lat: lat, long: long}),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': Rails.csrfToken()
+      },
+      credentials: 'same-origin'
+    }).then(function(response) {
+      return response.json();
+    }).then(function(data) {
+      console.log(data);
+    });
+  }
   
-  // add markers for each point
-  <% @destinations.each do |dest| %>
-    console.log(<% dest %>);
-    var coords = [<%= dest.long %>, <%= dest.lat %>];
-    new mapboxgl.Marker().setLngLat(coords).addTo(map);
-  <% end %>
+  map.on('load', function() {
+  
+    var geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapgoxgl: mapboxgl
+    });
+  
+    map.addControl(geocoder);
+  
+    geocoder.on('result', function(ev) {
+      var coords = ev.result.center
+      var popup = new mapboxgl.Popup()
+        .setHTML(
+          `<p>Title: ${ ev.result.text }
+          <br>
+          <button type="button" id="add_geo" onclick="addgeo(${coords[1]}, ${coords[0]})">Add</button>
+          `);
+      new mapboxgl.Marker({ color: "orange" })
+        .setLngLat(coords)
+        .setPopup(popup)
+        .addTo(map);
+    });
+  
+    // add markers for each point
+    <% @destinations.each do |dest| %>
+      console.log(<% dest %>);
+      var coords = [<%= dest.long %>, <%= dest.lat %>];
+      var popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(`<p>Lat: <%= dest.lat %><br>Long: <%= dest.long %></p>`);
+      new mapboxgl.Marker()
+        .setLngLat(coords)
+        .setPopup(popup)
+        .addTo(map);
+    <% end %>
+  });
+  
+  // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
+  map.on('mouseenter', 'marker', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
 </script>

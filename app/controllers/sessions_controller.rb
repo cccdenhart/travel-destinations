@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
   end
 
   def home
+    redirect_to user_destinations_path(session[:user_id])
   end
 
   def profile
