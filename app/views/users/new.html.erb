@@ -1,23 +1,26 @@
 <% @page_title = "UserAuth | Signup" %>
-<div class="Sign_Form">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="authen text-center">
   <h1>Sign Up</h1>
-  <%= form_for(:user, :url => {:controller => 'users', :action => 'create'}) do |f| %>
-    <p>
-      Username:<br>
-      <%= f.text_field :username%>
-    </p>
-    <p>
-      Email:<br>
-      <%= f.text_field :email%>
-    </p>
-    <p>
-      Password:<br>
-      <%= f.password_field :password%></p>
-    <p>
-      Password Confirmation:<br>
-      <%= f.password_field :password_confirmation%>
-    </p>
-    <%= f.submit :Signup %>
+  <%= form_for(:user, :url => {:controller => 'users', :action => 'create'}, :html => {:class => "form-horizontal center"}) do |f| %>
+    <div class="form-group">
+      <%= f.text_field :username, placeholder: 'username', class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.text_field :email, placeholder: 'email', class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.password_field :password, placeholder: 'password', class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.password_field :password_confirmation, placeholder: 'password', class: "form-control" %>
+    </div>
+    <%= f.submit :Signup, class: "btn btn-default btn-primary" %>
   <% end %>
   <% if @user.errors.any? %>
     <ul class="Signup_Errors">
