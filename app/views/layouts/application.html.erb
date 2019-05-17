@@ -5,28 +5,44 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet'/>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.0.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.0.0/mapbox-gl-geocoder.css' type='text/css' />
   </head>
   <body>
     <div class="user_auth">
       <!-- REFERENCED: https://github.com/RubySource/rails_simple_user_auth -->
-      <%unless session[:user_id]%>
-        <ul class="nav">
-          <li><%= link_to :Signup , :signup, class: "nav_links"%></li>
-          |
-          <li><%= link_to :Login , :login, class: "nav_links"%></li>
-        </ul>
-      <%else%>
-        <ul class="nav">
-          <li><%= link_to :Home , :home, class: "nav_links" %> |</li>
-          <li><%= link_to :Profile , :profile, class: "nav_links" %> |</li>
-          <li><%= link_to :Setting , :setting, class: "nav_links" %> |</li>
-          <li><%= link_to :Logout , :logout, class: "nav_links" %></li>
-        </ul>
-      <%end%>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Travel Destinations</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <%unless session[:user_id]%>
+              <li class="nav-item">
+                <%= link_to :Login , :login, class: "nav-link"%>
+              </li>
+              <li class="nav-item">
+                <%= link_to :Signup , :signup, class: "nav-link"%>
+              </li>
+            <%else%>
+              <li class="nav-item">
+                <%= link_to :Profile , :profile, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to :Settings , :setting, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to :Logout , :logout, class: "nav-link" %>
+              </li>
+            <%end%>
+          </ul>
+        </div>
+      </nav>
     </div>
     <% if flash[:color]== "valid" %>
       <div class="valid_notice">
