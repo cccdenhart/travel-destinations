@@ -13,12 +13,13 @@
   });
   
   // https://medium.com/actualize-network/sending-post-requests-in-rails-5-1-without-jquery-ff89f6f80487
-  function addgeo(lat, long) {
+  // ajax request to add a destination
+  function addgeo(lat, long, name, keywords) {
     console.log("lat: ", lat);
     console.log("long: ", long);
     fetch('/users/<%= @user.id %>/destinations.json', {
       method: 'post',
-      body: JSON.stringify({lat: lat, long: long}),
+      body: JSON.stringify({lat: lat, long: long, name: name, keywords: keywords.join(", ")}),
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-Token': Rails.csrfToken()
@@ -31,8 +32,10 @@
     });
   }
   
+  // retrieve necessary elements on map load
   map.on('load', function() {
   
+    // geocoder allowing for destination searches
     var geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapgoxgl: mapboxgl
@@ -40,13 +43,21 @@
   
     map.addControl(geocoder);
   
+    // display marker for a search result
+    // TODO: fix unknown syntax error in 'addgeo' function call
+    // TODO: style button
     geocoder.on('result', function(ev) {
-      var coords = ev.result.center
+      console.log(ev);
+      var coords = ev.result.center;
+      var name = ev.result["text_en-US"];
+      console.log(name);
+      var keywords = JSON.stringify(ev.result.properties.category.split(", "));
+      console.log(keywords);
       var popup = new mapboxgl.Popup()
         .setHTML(
-          `<p>Title: ${ ev.result.text }
+          `<p style="font-weight: bold">${ name }</p>
           <br>
-          <button type="button" id="add_geo" onclick="addgeo(${coords[1]}, ${coords[0]})">Add</button>
+          <button type="button" id="add_geo" onclick='addgeo(${ coords[1] }, ${ coords[0] }, ${ name }, ${ keywords })'>Add</button>
           `);
       new mapboxgl.Marker({ color: "orange" })
         .setLngLat(coords)
@@ -54,12 +65,13 @@
         .addTo(map);
     });
   
-    // add markers for each point
+    // add markers for each existing destination
+    // TODO: add link to 'show' page for each dest
     <% @destinations.each do |dest| %>
       console.log(<% dest %>);
       var coords = [<%= dest.long %>, <%= dest.lat %>];
       var popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`<p>Lat: <%= dest.lat %><br>Long: <%= dest.long %></p>`);
+        .setHTML(`<p style='font-weight:bold'><%= dest.name %></p>`);
       new mapboxgl.Marker()
         .setLngLat(coords)
         .setPopup(popup)
@@ -67,7 +79,8 @@
     <% end %>
   });
   
-  // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
+  // Change the cursor to a pointer when it enters a feature in the 'symbols' layer.
+  // TODO: make this work
   map.on('mouseenter', 'marker', function () {
     map.getCanvas().style.cursor = 'pointer';
   });

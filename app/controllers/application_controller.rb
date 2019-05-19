@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  # TODO: prevent viewing of destinatin page unless proper session exists
   protect_from_forgery unless: -> { request.format.json? }
   # user authentication for all controllers
   protected

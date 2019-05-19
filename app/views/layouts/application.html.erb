@@ -4,6 +4,7 @@
     <title>Travel</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <!-- TODO: convert CDNs to Gems -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css' rel='stylesheet' />
@@ -30,12 +31,6 @@
                 <%= link_to :Signup , :signup, class: "nav-link"%>
               </li>
             <%else%>
-              <li class="nav-item">
-                <%= link_to :Profile , :profile, class: "nav-link" %>
-              </li>
-              <li class="nav-item">
-                <%= link_to :Settings , :setting, class: "nav-link" %>
-              </li>
               <li class="nav-item">
                 <%= link_to :Logout , :logout, class: "nav-link" %>
               </li>

@@ -4,4 +4,4 @@ This is a web application for managing any destinations across the world that a 
 ## Dependencies
 * Ruby 2.5.3
 * Rails 5.2.2
-* PostgreSQL
+* PostgreSQL 11.1
